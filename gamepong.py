@@ -8,24 +8,38 @@ import pygame
 
 
 class GameCycle():
-    time_period = 10
+    time_period = 150
 
     def main_loop(self):
+
         def _event_handler(self, event_list):
             for event in event_list:
                 if event.type == pygame.QUIT:
                     self.game_finish = True
                     print('Event quit')
 
-        print('Main loop call...')
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_KP_PLUS:
+                        GameCycle.time_period += 10
+                        print('timer +=10')
+
+                    if event.key == pygame.K_0:
+                        GameCycle.time_period -= 10
+                        print('timer -=10')
+
+                    if event.key == pygame.K_KP0:
+                        GameCycle.time_period = 100
+            pass
+
         print(self.game_finish)
 
         while self.game_finish is False:
-            print('While cycle')
+            #print('While cycle')
             _event_handler(self, pygame.event.get())
             self.scene_drawer.draw()
 
             self.clock.tick(GameCycle.time_period)
+            self.ball.move(1, 2)
             pass
 
         pygame.quit()
@@ -34,37 +48,42 @@ class GameCycle():
     def __init__(self):
         print('Constructor call')
         pygame.init()
-        self.size = [800, 600]
+        self.size = [800, 1004]
         self.game_score = [0, 0]
         self.game_finish = False
 
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(self.size)
-        self.ball = Ball(self.size[0] // 2, self.size[1] // 2)
+        self.ball = Ball(self.size[0] // 2, self.size[1] // 2, scene=self.screen)
         self.scene_drawer = Scene(self.screen, score=self.game_score,
                                   ball=self.ball)
 
         pygame.display.set_caption('pong on pygame:.')
 
-
 class Ball:
     size = 20
 
-    def __init__(self, x_pos, y_pos, speed_x=1,
-                 speed_y=1, speed_ratio=1, area_size=[800, 600]):
+    def __init__(self, x_pos, y_pos, speed_x=10,
+                 speed_y=5, speed_ratio=1, scene=None):
 
+        print('Call construct ball')
         self.x = x_pos
         self.y = y_pos
         self.speed = speed_ratio
         self.speed_x = speed_x
         self.speed_y = speed_y
-        self.max_value_x = area_size[0]
-        self.max_value_y = area_size[1]
+
+        self.max_value_x, self.max_value_y = scene.get_size()
+
 
     def move(self, add_x=0, add_y=0):
-        self.x += add_x * self.speed
-        self.y += add_y * self.speed
+        if self.x > self.max_value_x or self.x < 0:
+            self.speed_x *= -1
+        if self.y > self.max_value_y or self.y < 0:
+            self.speed_y *= -1
 
+        self.x += self.speed_x
+        self.y += self.speed_y
 
 class Pin:
     def __init__(self, width, height, pos_x, pos_y):
@@ -88,12 +107,15 @@ class Scene:
         self.left_pin = left
         self.right_ping = right
         self.ball = ball
+        self.i = 0
 
     def draw(self):
         #middle_line_begin [ s]
         max_x, max_y = self.screen.get_size()
         middle_line_begin = [max_x // 2, 0]
         middle_line_end = [max_x // 2, max_y]
+
+        self.screen.fill(Scene.colors['black'])
 
         if self.score:
             font = pygame.font.Font(None, 15)
@@ -108,6 +130,7 @@ class Scene:
                               (self.ball.x, self.ball.y), self.ball.size, 0)
             pygame.draw.circle(self.screen, Scene.colors['red'],
                                (self.ball.x, self.ball.y), self.ball.size + 1, 2)
+
 
         pygame.display.flip()
 
