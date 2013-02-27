@@ -109,20 +109,6 @@ class Scene:
             pygame.draw.circle(self.screen, Scene.colors['red'],
                                (self.ball.x, self.ball.y), self.ball.size + 1, 2)
 
-
-
-
-        def drawcircle(image, colour, origin, radius, width=0):
-            if width == 0:
-                pygame.draw.circle(image,colour,intlist(origin),int(radius))
-            else:
-                if radius > 65534/5: radius = 65534/5
-                circle = pygame.Surface([radius*2+width,radius*2+width]).convert_alpha()
-                circle.fill([0,0,0,0])
-                pygame.draw.circle(circle, colour, intlist([circle.get_width()/2, circle.get_height()/2]), int(radius+(width/2)))
-                if int(radius-(width/2)) > 0: pygame.draw.circle(circle, [0,0,0,0], intlist([circle.get_width()/2, circle.get_height()/2]), abs(int(radius-(width/2))))
-                image.blit(circle, [origin[0] - (circle.get_width()/2), origin[1] - (circle.get_height()/2)])
-
         pygame.display.flip()
 
 
