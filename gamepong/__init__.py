@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 #  * Date: 2/27/13
-#  * Time: 10:57 AM
+#  * Time: 5:54 PM
 #  =============================
 from __future__ import print_function
-import gamepong
+from . gamepong import *
 
 if __name__ == '__main__':
-    game = gamepong.GameCycle()
-    game.main_loop()
     pass
