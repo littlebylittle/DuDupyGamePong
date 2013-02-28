@@ -9,7 +9,7 @@ from . pinplatform import Pin
 
 
 class GameCycle():
-    time_period = 50
+    time_period = 120
 
     def main_loop(self):
 
