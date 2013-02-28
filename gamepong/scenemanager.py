@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 #  * Date: 2/27/13
 #  * Time: 6:06 PM
@@ -37,22 +37,26 @@ class Scene:
             text = font.render("Score:  " + str(self.score), False, Scene.colors['white'])
             self.screen.blit(text, [max_x * 0.75, 0])
 
-        pygame.draw.line(self.screen, Scene.colors['white'], middle_line_begin, middle_line_end, 15)
+        pygame.draw.line(self.screen, Scene.colors['white'],
+                         middle_line_begin, middle_line_end, 15)
 
-        if self.ball:
-            pygame.draw.circle(self.screen, Scene.colors['white'],
-                               (self.ball.x, self.ball.y), self.ball.size, 0)
-            pygame.draw.circle(self.screen, Scene.colors['red'],
-                               (self.ball.x, self.ball.y), self.ball.size + 1, 2)
+        # if self.ball:
+        #     #self.ball.draw(self)
+        #     pygame.draw.circle(self.screen, Scene.colors['white'],
+        #                        (self.ball.rect.x, self.ball.rect.y), self.ball.size, 0)
+        #     pygame.draw.circle(self.screen, Scene.colors['red'],
+        #                        (self.ball.rect.x, self.ball.rect.y), self.ball.size + 1, 2)
+        #
+        # if self.left_pin:
+        #     rect = [(0, self.left_pin.rect.y), (self.left_pin.width, self.left_pin.height)]
+        #     pygame.draw.rect(self.screen, Scene.colors['white'], rect, 0)
+        #
+        # if self.right_pin:
+        #     rect = [(self.right_pin.rect.x - self.right_pin.width, self.right_pin.rect.y),
+        #             (max_x + 1, self.right_pin.height)]
+        #     pygame.draw.rect(self.screen, Scene.colors['white'], rect, 0)
 
-        if self.left_pin:
-            rect = [(0, self.left_pin.y), (self.left_pin.width, self.left_pin.height)]
-            pygame.draw.rect(self.screen, Scene.colors['white'], rect, 0)
-
-        if self.right_pin:
-            rect = [(max_x - self.right_pin.width, self.right_pin.y),
-                    (max_x + 1, self.right_pin.height)]
-            pygame.draw.rect(self.screen, Scene.colors['white'], rect, 0)
+        self.screen.displayed_sprites.draw(self.screen)
 
         pygame.display.flip()
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 #  * Date: 2/27/13
 #  * Time: 11:05 AM
@@ -6,7 +6,6 @@
 import pygame
 from . ball import Ball
 from . pinplatform import Pin
-from . scenemanager import Scene
 
 
 class GameCycle():
@@ -18,7 +17,6 @@ class GameCycle():
             for event in event_list:
                 if event.type == pygame.QUIT:
                     self.game_finish = True
-                    print('Event quit')
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_KP_PLUS:
@@ -43,37 +41,63 @@ class GameCycle():
                         self.left_pin.set_y_move(0)
             pass
 
-        print(self.game_finish)
-
         while self.game_finish is False:
-            #print('While cycle')
             _event_handler(self, pygame.event.get())
-            self.scene_drawer.draw()
+            self.render()
 
             self.clock.tick(GameCycle.time_period)
-            self.ball.move(1, 2)
+            self.ball.move()
             self.left_pin.move()
             pass
 
         pygame.quit()
-        print('Main loop done!')
 
-    def __init__(self):
-        print('Constructor call')
+    def __init__(self, resolution=None):
         pygame.init()
-        self.size = [1600, 1004]
+        if not resolution:
+            self.size = [800, 600]
+        else:
+            self.size = resolution
         self.game_score = [0, 0]
         self.game_finish = False
 
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(self.size)
-        self.ball = Ball(self.size[0] // 2, self.size[1] // 2, scene=self.screen)
-        self.left_pin = Pin(self.screen)
-        self.right_pin = Pin(self.screen)
-        self.scene_drawer = Scene(self.screen, score=self.game_score,
-                                  ball=self.ball, left=self.left_pin, right=self.right_pin)
+
+        self.left_pin = Pin(self.screen, 0)
+        self.right_pin = Pin(self.screen, self.size[0] + 1,)
+
+        self.ball = Ball(self, )
+
+        self.displayed_sprites = pygame.sprite.RenderPlain()
+        self.displayed_sprites.add(self.left_pin, self.right_pin, self.ball)
 
         pygame.display.set_caption('pong on pygame:.')
+
+    def render(self):
+        colors = dict()
+        colors['red'] = [0xff, 0, 0]
+        colors['green'] = [0, 0xff, 0]
+        colors['blue'] = [0, 0, 0xff]
+        colors['white'] = [0xff, 0xff, 0xff]
+        colors['black'] = [0, 0, 0]
+
+        self.screen.fill(colors['black'])
+
+        self.displayed_sprites.draw(self.screen)
+
+        max_x, max_y = self.screen.get_size()
+        middle_line_begin = [max_x // 2, 0]
+        middle_line_end = [max_x // 2, max_y]
+
+        font = pygame.font.Font(None, 15)
+        font.set_bold(False)
+        text = font.render("Score:  " + str(self.game_score), False, colors['white'])
+        self.screen.blit(text, [max_x * 0.75, 0])
+
+        pygame.draw.line(self.screen, colors['white'],
+                         middle_line_begin, middle_line_end, 15)
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
