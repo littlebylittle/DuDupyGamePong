@@ -40,7 +40,10 @@ class GameCycle():
                     if event.key == pygame.K_UP:
                         self.left_pin.set_y_move(0)
             pass
-
+        #pygame.mixer.music.load('gamepong/sounds/example.mp3')
+        pygame.mixer.music.load('gamepong/sounds/example.mp3')
+        pygame.mixer.music.set_volume(.2)
+        pygame.mixer.music.play(-1,)
         while self.game_finish is False:
             _event_handler(self, pygame.event.get())
             self.render()
@@ -49,7 +52,7 @@ class GameCycle():
             self.ball.move()
             self.left_pin.move()
             pass
-
+        pygame.mixer.music.stop()
         pygame.quit()
 
     def __init__(self, resolution=None):
@@ -73,6 +76,7 @@ class GameCycle():
         self.displayed_sprites.add(self.left_pin, self.right_pin, self.ball)
 
         pygame.display.set_caption('pong on pygame:.')
+        pygame.mouse.set_visible(False)
 
     def render(self):
         colors = dict()
@@ -96,7 +100,7 @@ class GameCycle():
         self.screen.blit(text, [max_x * 0.75, 0])
 
         pygame.draw.line(self.screen, colors['white'],
-                         middle_line_begin, middle_line_end, 15)
+                         middle_line_begin, middle_line_end, 5)
         pygame.display.flip()
 
 

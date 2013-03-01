@@ -30,11 +30,7 @@ class Ball(pygame.sprite.Sprite):
         self.block_list.add(gcycle.right_pin)
 
     def move(self):
-        result = pygame.sprite.spritecollide(self, self.block_list, False)
-        if result:
-            self.speed_x *= -1
-            self.speed_y *= -1
-            self.speed_y -= 1
+        self.check_collissions()
 
         if self.rect.x < (self.callobj.left_pin.rect.x // 2):
             self.callobj.game_score[1] += 1
@@ -51,6 +47,29 @@ class Ball(pygame.sprite.Sprite):
 
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
+
+    def check_collissions(self):
+        conflict = pygame.sprite.spritecollide(self, self.block_list, False)
+        if conflict:
+        # pygame.mixer.music.pause()
+        # loop_time = pygame.mixer.music.get_pos()
+        # pygame.mixer.music.load('gamepong/sounds/kick_techno01.ogg')
+        # pygame.mixer.music.set_volume(.8)
+        # pygame.mixer.music.play(0)
+        # #pygame.mixer.music.fadeout(1)
+        #
+        # pygame.mixer.music.queue('gamepong/sounds/example.mp3')
+        # pygame.mixer.music.set_volume(.2)
+        # pygame.mixer.music.play(-1, loop_time)
+            if self.size > 5:
+                self.size -= 0.25
+                self.image = pygame.Surface([self.size, self.size])
+                self.image.fill([0xff, 0xff, 0xff])
+
+            self.speed_x *= -1
+            self.speed_y *= -1
+            self.speed_y -= 1
+
 
 if __name__ == '__main__':
     pass
