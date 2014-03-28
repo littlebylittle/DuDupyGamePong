@@ -40,7 +40,7 @@ class GameCycle():
                     if event.key == pygame.K_UP:
                         self.left_pin.set_y_move(0)
             pass
-        #pygame.mixer.music.load('gamepong/sounds/example.mp3')
+
         pygame.mixer.music.load('gamepong/sounds/example.mp3')
         pygame.mixer.music.set_volume(.2)
         pygame.mixer.music.play(-1,)
