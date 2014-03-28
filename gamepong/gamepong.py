@@ -54,6 +54,7 @@ class GameCycle():
         pygame.mixer.music.load('gamepong/sounds/example.mp3')
         pygame.mixer.music.set_volume(.2)
         pygame.mixer.music.play(-1,)
+
         while self.is_game_finish is False:
             _event_handler()
             self.render()
