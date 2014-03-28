@@ -3,6 +3,10 @@
 #  * Date: 2/27/13
 #  * Time: 11:05 AM
 #  =============================
+if __name__ == '__main__':
+    exit("Its package file! Start with main.py")
+
+
 import pygame
 from . ball import Ball
 from . pinplatform import Pin
@@ -10,13 +14,20 @@ from . pinplatform import Pin
 
 class GameCycle():
     time_period = 120
+    colors = dict()
+    colors['red'] = [0xff, 0, 0]
+    colors['green'] = [0, 0xff, 0]
+    colors['blue'] = [0, 0, 0xff]
+    colors['white'] = [0xff, 0xff, 0xff]
+    colors['black'] = [0, 0, 0]
 
     def main_loop(self):
 
-        def _event_handler(self, event_list):
+        def _event_handler():
+            event_list = pygame.event.get()
             for event in event_list:
                 if event.type == pygame.QUIT:
-                    self.game_finish = True
+                    self.is_game_finish = True
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_KP_PLUS:
@@ -39,19 +50,18 @@ class GameCycle():
                         self.left_pin.set_y_move(0)
                     if event.key == pygame.K_UP:
                         self.left_pin.set_y_move(0)
-            pass
 
         pygame.mixer.music.load('gamepong/sounds/example.mp3')
         pygame.mixer.music.set_volume(.2)
         pygame.mixer.music.play(-1,)
-        while self.game_finish is False:
-            _event_handler(self, pygame.event.get())
+        while self.is_game_finish is False:
+            _event_handler()
             self.render()
 
             self.clock.tick(GameCycle.time_period)
             self.ball.move()
             self.left_pin.move()
-            pass
+
         pygame.mixer.music.stop()
         pygame.quit()
 
@@ -62,7 +72,7 @@ class GameCycle():
         else:
             self.size = resolution
         self.game_score = [0, 0]
-        self.game_finish = False
+        self.is_game_finish = False
 
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(self.size)
@@ -79,32 +89,19 @@ class GameCycle():
         pygame.mouse.set_visible(False)
 
     def render(self):
-        colors = dict()
-        colors['red'] = [0xff, 0, 0]
-        colors['green'] = [0, 0xff, 0]
-        colors['blue'] = [0, 0, 0xff]
-        colors['white'] = [0xff, 0xff, 0xff]
-        colors['black'] = [0, 0, 0]
-
-        self.screen.fill(colors['black'])
-
+        self.screen.fill(GameCycle.colors['black'])
         self.displayed_sprites.draw(self.screen)
 
         max_x, max_y = self.screen.get_size()
         middle_line_begin = [max_x // 2, 0]
         middle_line_end = [max_x // 2, max_y]
 
-        font = pygame.font.Font(None, 15)
+        font = pygame.font.Font(None, 19)
         font.set_bold(False)
-        text = font.render("Score:  " + str(self.game_score), False, colors['white'])
+        text = font.render("Score:  " + str(self.game_score), False,
+                           GameCycle.colors['white'])
         self.screen.blit(text, [max_x * 0.75, 0])
 
-        pygame.draw.line(self.screen, colors['white'],
+        pygame.draw.line(self.screen, GameCycle.colors['white'],
                          middle_line_begin, middle_line_end, 5)
         pygame.display.flip()
-
-
-if __name__ == '__main__':
-    game = GameCycle()
-    game.main_loop()
-    pass
