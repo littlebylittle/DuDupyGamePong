@@ -10,6 +10,7 @@ if __name__ == '__main__':
 import pygame
 from . ball import Ball
 from . pinplatform import Pin
+from pinbot import Pinbot
 
 
 class GameCycle():
@@ -61,6 +62,7 @@ class GameCycle():
 
             self.clock.tick(GameCycle.time_period)
             self.ball.move()
+            self.right_pin.follow_ball()
             self.left_pin.move()
 
         pygame.mixer.music.stop()
@@ -79,9 +81,10 @@ class GameCycle():
         self.screen = pygame.display.set_mode(self.size)
 
         self.left_pin = Pin(self.screen, 0)
-        self.right_pin = Pin(self.screen, self.size[0] + 1,)
+        self.right_pin = Pinbot(self.screen, self.size[0] + 1,)
 
         self.ball = Ball(self, )
+        self.right_pin.register_ball(self.ball)
 
         self.displayed_sprites = pygame.sprite.RenderPlain()
         self.displayed_sprites.add(self.left_pin, self.right_pin, self.ball)

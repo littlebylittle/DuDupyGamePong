@@ -1,21 +1,19 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-#  * Date: 2/27/13
-#  * Time: 6:05 PM
-#  =============================
-#from __future__ import print_function
 import pygame
 
 
 class Pin(pygame.sprite.Sprite):
+    width = 10
+
     def __init__(self, surface, x_pos):
 
         pygame.sprite.Sprite.__init__(self)
         self.surface = surface
         self.max_x, self.max_y = surface.get_size()
 
-        self.width = 10
-        self.height = self.max_y // 7
+        self.width = Pin.width
+        self.height = self.max_y // 8
 
         self.image = pygame.Surface([self.width, self.height])
         self.image.fill([0xff, 0xff, 0xff])
